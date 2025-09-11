@@ -1,26 +1,34 @@
 import express from 'express';
 import jwt from 'jsonwebtoken';
 import { JWT_SECRET } from '@repo/backend-common/config';
+import { middleware } from './middleware';
 import {
   CreateUserSchema,
-  CreateRoomSchema,
   SigninSchema,
+  CreateRoomSchema,
 } from '@repo/common/types';
 import { prismaClient } from '@repo/db/client';
-import { middleware } from './middleware';
+import cors from 'cors';
 
 const app = express();
-app.post('api/v1/signup', async (req, res) => {
+app.use(express.json());
+app.use(cors());
+
+app.post('/signup', async (req, res) => {
   const parsedData = CreateUserSchema.safeParse(req.body);
   if (!parsedData.success) {
-    res.status(400).json({ error: parsedData.error.errors });
+    console.log(parsedData.error);
+    res.json({
+      message: 'Incorrect inputs',
+    });
     return;
   }
   try {
     const user = await prismaClient.user.create({
       data: {
         email: parsedData.data?.username,
-        //hashing would do later
+
+        // TODO: Hash the pw
         password: parsedData.data.password,
         name: parsedData.data.name,
       },
@@ -30,43 +38,59 @@ app.post('api/v1/signup', async (req, res) => {
     });
   } catch (e) {
     res.status(411).json({
-      message: 'User already exists',
+      message: e,
     });
   }
 });
 
-app.post('api/v1/signin', async (req, res) => {
+app.post('/signin', async (req, res) => {
   const parsedData = SigninSchema.safeParse(req.body);
   if (!parsedData.success) {
-    res.status(400).json({ error: parsedData.error.errors });
+    res.json({
+      error: parsedData.error.format,
+      message: 'Incorrect inputs',
+    });
     return;
   }
+
+  // TODO: Compare the hashed pws here
   const user = await prismaClient.user.findFirst({
     where: {
-      email: parsedData.data.username,
+      email: parsedData.data.email,
       password: parsedData.data.password,
     },
   });
+
   if (!user) {
-    res.status(401).json({
-      message: 'Invalid email or password',
+    res.status(403).json({
+      message: 'Not authorized',
     });
     return;
   }
-  const token = jwt.sign({ userId: user.id }, JWT_SECRET);
-  res.json({ token });
+
+  const token = jwt.sign(
+    {
+      userId: user?.id,
+    },
+    JWT_SECRET
+  );
+
+  res.json({
+    token,
+  });
 });
 
-app.post('api/v1/rooms', middleware, async (req, res) => {
+app.post('/room', middleware, async (req, res) => {
   const parsedData = CreateRoomSchema.safeParse(req.body);
   if (!parsedData.success) {
     res.json({
-      message: 'incorrect data',
+      message: 'Incorrect inputs',
     });
     return;
   }
-  //@ts-ignore
+  // @ts-ignore: TODO: Fix this
   const userId = req.userId;
+
   try {
     const room = await prismaClient.room.create({
       data: {
@@ -74,30 +98,67 @@ app.post('api/v1/rooms', middleware, async (req, res) => {
         adminId: userId,
       },
     });
+
     res.json({
       roomId: room.id,
     });
   } catch (e) {
     res.status(411).json({
-      message: 'Error creating room',
+      message: 'Room already exists with this name',
     });
   }
 });
 
-app.get('/chats/:roomId', async (req, res) => {
-  const roomId = req.params.roomId;
-  const messages = await prismaClient.chat.findMany({
-    where: {
-      roomId: roomId,
-    },
-    orderBy: {
-      id: 'desc',
-    },
-    take: 50,
-  });
+app.get('/rooms',middleware,async (req,res)=>{
+   
+  // @ts-ignore: TODO: Fix this
+  const userId = req.userId;
+
+  try{
+ const messages = await prismaClient.room.findMany({
+      where: {
+        adminId: userId,
+      },
+      orderBy: {
+        id: 'desc',
+      },
+      take:
+      50
+      });
+
   res.json({
-    messages,
-  });
+    messages
+  })
+}
+  catch(err){
+    res.json({err})
+  }
+
+
+})
+app.get('/chats/:roomId', async (req, res) => {
+  try {
+    const roomId = Number(req.params.roomId);
+    console.log(req.params.roomId);
+    const messages = await prismaClient.chat.findMany({
+      where: {
+        roomId: roomId,
+      },
+      orderBy: {
+        id: 'desc',
+      },
+      take: 50,
+    });
+
+    res.json({
+      messages,
+    });
+  } catch (e) {
+    console.log(e);
+    res.json({
+      messages: [],
+    });
+  }
 });
 
 app.get('/room/:slug', async (req, res) => {
@@ -107,9 +168,12 @@ app.get('/room/:slug', async (req, res) => {
       slug,
     },
   });
+
   res.json({
     room,
   });
 });
+
+
 
 app.listen(3001);
