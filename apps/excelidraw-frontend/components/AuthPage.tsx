@@ -4,6 +4,7 @@ import { HTTP_BACKEND } from "@/config";
 import axios from "axios";
 import { ChangeEvent, useState } from "react";
 import { useRouter } from "next/navigation";
+import { Button } from "@repo/ui/button";
 export function AuthPage({ isSignin }: { isSignin: boolean }) {
   const router=useRouter()
 
@@ -31,7 +32,7 @@ export function AuthPage({ isSignin }: { isSignin: boolean }) {
           setPassword(e.target.value)}}  type="password" placeholder="Password" />
           </div>
         <div className="pt-2">
-          <button className="bg-red-200 rounded p-2" onClick={() => {
+          <button className="bg-red-200 hover:bg-red-400 rounded p-2" onClick={() => {
             if(isSignin){
               axios.post(`${HTTP_BACKEND}/signin`,
                 {
@@ -61,8 +62,23 @@ export function AuthPage({ isSignin }: { isSignin: boolean }) {
           }}>
             {isSignin ? 'Sign in' : 'Signup'}
           </button>
-        </div>
+          </div>
+          <div>
+            <div>
+              <br />
+              <span onClick={()=>{
+                isSignin? router.push('/signup'):router.push("/signin")
+              }}className="cursor-pointer text-blue-700 hover:text-blue-900">
+                                             {isSignin?'Not Signed in?':"Already Registered?"} </span>
+         </div>
+{/*
+           <Button variant="secondary" size="lg" className="rounded-md bg-blue-400 hover:bg-red-500">
+              {isSignin? 'Signup Now':'Signin Now'}
+          </Button>
+*/}
+          </div>
       </div>
+
     </div>
   );
 }
