@@ -2,6 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Hide scrollbar but keep scroll working */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;  /* IE & Edge */
+  scrollbar-width: none;     /* Firefox */
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;

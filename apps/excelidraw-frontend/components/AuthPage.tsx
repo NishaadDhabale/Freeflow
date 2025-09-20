@@ -4,7 +4,6 @@ import { HTTP_BACKEND } from "@/config";
 import axios from "axios";
 import { ChangeEvent, useState } from "react";
 import { useRouter } from "next/navigation";
-
 export function AuthPage({ isSignin }: { isSignin: boolean }) {
   const router=useRouter()
 

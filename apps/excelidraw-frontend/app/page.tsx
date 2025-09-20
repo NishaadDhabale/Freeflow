@@ -1,5 +1,5 @@
 import { Button } from '@repo/ui/button';
-import { Card } from '@repo/ui/card';
+ //import { Card } from '@repo/ui/card';
 import {
   Pencil,
   Share2,
@@ -9,6 +9,15 @@ import {
   Download,
 } from 'lucide-react';
 import Link from 'next/link';
+
+
+
+// Custom Card component to avoid hydration issues
+const Card = ({ children, className, ...props }) => (
+  <div className={`rounded-lg border bg-card text-card-foreground shadow-sm ${className || ''}`} {...props}>
+    {children}
+  </div>
+);
 
 function App() {
   return (
