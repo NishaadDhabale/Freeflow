@@ -172,24 +172,14 @@ const Navbar: React.FC<DarkModeProps> = ({ isDarkMode, toggleDarkMode }) => (
       delay={200}
       className="hidden lg:flex items-center gap-8 text-sm text-gray-500 dark:text-gray-400 font-medium"
     >
-      <a
-        href="#features"
-        className="hover:text-black dark:hover:text-white transition-colors"
-      >
-        Features
-      </a>
+      
       <a
         href="#how-it-works"
         className="hover:text-black dark:hover:text-white transition-colors"
       >
         How it Works
       </a>
-      <a
-        href="#pricing"
-        className="hover:text-black dark:hover:text-white transition-colors"
-      >
-        Pricing
-      </a>
+
       <a
         href="#testimonials"
         className="hover:text-black dark:hover:text-white transition-colors"
