@@ -1,4 +1,3 @@
-Markdown
 # 🚀 Freeflow - Collaborative Whiteboarding Platform
 
 ## 📖 Description
@@ -38,101 +37,113 @@ Freeflow is a high-performance, real-time collaborative whiteboarding and drawin
 Follow these step-by-step instructions assuming a completely fresh environment.
 
 **Prerequisites:**
-1. **Download & Install Git:** [Git Downloads](https://git-scm.com/downloads)
-2. **Download & Install Node.js:** [Node.js Downloads](https://nodejs.org/) (Version 18 or higher is required)
+1. **Download & Install Git:** https://git-scm.com/downloads
+2. **Download & Install Node.js:** https://nodejs.org/ (Version 18 or higher is required)
 3. **Install pnpm:** Open your terminal and run:
-   ```bash
-   npm install -g pnpm
+
+```bash
+npm install -g pnpm
+```
+
 Setup Steps:
 
 Clone the repository:
 
-   ```Bash
-   git clone <your-github-repo-url>
-   cd freeflow
-   ```
+```bash
+git clone <your-github-repo-url>
+cd freeflow
+```
+
 Install dependencies:
 Because this is a monorepo, pnpm will resolve all workspaces automatically.
-   
 
-   ```bash
-   pnpm install
-   ```
+```bash
+pnpm install
+```
 
 Environment Variables:
 Create a .env file in the root directory and configure it (you will need a local or cloud Postgres database):
 
-   ```Code snippet
-   DATABASE_URL="postgresql://user:password@localhost:5432/freeflow"
-   JWT_SECRET="your_super_secret_jwt_key"
+```env
+DATABASE_URL="postgresql://user:password@localhost:5432/freeflow"
+JWT_SECRET="your_super_secret_jwt_key"
 ```
 
 Database Migration:
-   ```Bash
-   cd packages/db
-   npx prisma migrate dev --name init
-   npx prisma generate
-   cd ../..
-   ```
-▶️ Usage
+
+```bash
+cd packages/db
+npx prisma migrate dev --name init
+npx prisma generate
+cd ../..
+```
+
+## ▶️ Usage
 To run the entire monorepo simultaneously in development mode:
 
-```Bash
+```bash
 # Start all apps (frontend, web, http-backend, ws-backend)
 pnpm run dev
 ```
+
 Expected Output: Turborepo will spin up all 4 microservices. You will see logs from Next.js, Express, and the WebSocket server starting on their respective ports.
 
-💡 Usage Examples
+## 💡 Usage Examples
 To build the project for production:
 
-```Bash
+```bash
 pnpm run build
-To run formatters across all packages:
 ```
-```Bash
+
+To run formatters across all packages:
+
+```bash
 pnpm run format
 ```
 
-```##📂 Project Structure
-Plaintext
-   freeflow/
-   ├── apps/
-   │   ├── excelidraw-frontend/ # The main drawing canvas web app
-   │   ├── http-backend/        # Express REST API
-   │   ├── web/                 # Landing page web app
-   │   └── ws-backend/          # Real-time WebSocket server
-   ├── packages/
-   │   ├── db/                  # Prisma schema and generated client
-   │   ├── ui/                  # Shared React UI components
-   │   ├── common/              # Shared types and validation schemas
-   │   └── backend-common/      # Shared backend utilities
-   ├── package.json
-   └── turbo.json
+## 📂 Project Structure
+
+```plaintext
+freeflow/
+├── apps/
+│   ├── excelidraw-frontend/ # The main drawing canvas web app
+│   ├── http-backend/        # Express REST API
+│   ├── web/                 # Landing page web app
+│   └── ws-backend/          # Real-time WebSocket server
+├── packages/
+│   ├── db/                  # Prisma schema and generated client
+│   ├── ui/                  # Shared React UI components
+│   ├── common/              # Shared types and validation schemas
+│   └── backend-common/      # Shared backend utilities
+├── package.json
+└── turbo.json
 ```
-🔌 API Documentation
+
+## 🔌 API Documentation
 Refer to the HTTP and WS backend sub-directories for detailed API docs.
 
-🧪 Testing
+## 🧪 Testing
 (Tests yet to be implemented)
-```
-Bash
+
+```bash
 pnpm run test
-🚧 Features
-Monorepo setup enabling code sharing
 ```
+
+## 🚧 Features
+Monorepo setup enabling code sharing
+
 Consistent ESLint and Prettier formatting across apps
 
 Real-time engine integration
 
-🔮 Future Improvements
+## 🔮 Future Improvements
 Add comprehensive end-to-end testing with Cypress/Playwright
 
 Dockerize the entire monorepo with Docker Compose
 
 CI/CD pipeline using GitHub Actions
 
-🤝 Contributing
+## 🤝 Contributing
 Fork the project
 
 Create your feature branch (git checkout -b feature/AmazingFeature)
@@ -143,11 +154,9 @@ Push to the branch (git push origin feature/AmazingFeature)
 
 Open a Pull Request
 
-📜 License
-Distributed under the MIT License.
 
-👤 Author / Credits
-Nisha Addhabale
+## 👤 Author / Credits
+Nishaad Dhabale
 
 
 # Turborepo starter
