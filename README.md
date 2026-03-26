@@ -47,59 +47,69 @@ Setup Steps:
 
 Clone the repository:
 
-Bash
-git clone <your-github-repo-url>
-cd freeflow
+   ```Bash
+   git clone <your-github-repo-url>
+   cd freeflow
+   ```
 Install dependencies:
 Because this is a monorepo, pnpm will resolve all workspaces automatically.
+   
 
-Bash
-pnpm install
+   ```bash
+   pnpm install
+   ```
+
 Environment Variables:
 Create a .env file in the root directory and configure it (you will need a local or cloud Postgres database):
 
-Code snippet
-DATABASE_URL="postgresql://user:password@localhost:5432/freeflow"
-JWT_SECRET="your_super_secret_jwt_key"
-Database Migration:
+   ```Code snippet
+   DATABASE_URL="postgresql://user:password@localhost:5432/freeflow"
+   JWT_SECRET="your_super_secret_jwt_key"
+```
 
-Bash
-cd packages/db
-npx prisma migrate dev --name init
-npx prisma generate
-cd ../..
+Database Migration:
+   ```Bash
+   cd packages/db
+   npx prisma migrate dev --name init
+   npx prisma generate
+   cd ../..
+   ```
 ▶️ Usage
 To run the entire monorepo simultaneously in development mode:
 
-Bash
+```Bash
 # Start all apps (frontend, web, http-backend, ws-backend)
 pnpm run dev
+```
 Expected Output: Turborepo will spin up all 4 microservices. You will see logs from Next.js, Express, and the WebSocket server starting on their respective ports.
 
 💡 Usage Examples
 To build the project for production:
 
-Bash
+```Bash
 pnpm run build
 To run formatters across all packages:
-
-Bash
+```
+```Bash
 pnpm run format
-📂 Project Structure
+```
+
+```##📂 Project Structure
 Plaintext
-freeflow/
-├── apps/
-│   ├── excelidraw-frontend/ # The main drawing canvas web app
-│   ├── http-backend/        # Express REST API
-│   ├── web/                 # Landing page web app
-│   └── ws-backend/          # Real-time WebSocket server
-├── packages/
-│   ├── db/                  # Prisma schema and generated client
-│   ├── ui/                  # Shared React UI components
-│   ├── common/              # Shared types and validation schemas
-│   └── backend-common/      # Shared backend utilities
-├── package.json
-└── turbo.json
+   freeflow/
+   ├── apps/
+   │   ├── excelidraw-frontend/ # The main drawing canvas web app
+   │   ├── http-backend/        # Express REST API
+   │   ├── web/                 # Landing page web app
+   │   └── ws-backend/          # Real-time WebSocket server
+   ├── packages/
+   │   ├── db/                  # Prisma schema and generated client
+   │   ├── ui/                  # Shared React UI components
+   │   ├── common/              # Shared types and validation schemas
+   │   └── backend-common/      # Shared backend utilities
+   ├── package.json
+   └── turbo.json
+```
 🔌 API Documentation
 Refer to the HTTP and WS backend sub-directories for detailed API docs.
 
