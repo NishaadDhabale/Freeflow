@@ -1,0 +1,8 @@
+/* Import from app/layout.tsx, or copy these rules into app/globals.css. */
+@import url("https://fonts.googleapis.com/css2?family=Short+Stack&display=swap");
+
+.room-name-doodle {
+  font-family: "Short Stack", "Comic Sans MS", "Chalkboard SE", cursive;
+  font-weight: 400;
+  letter-spacing: -0.025em;
+}

@@ -2,15 +2,16 @@
 
 import { HTTP_BACKEND } from '@/config';
 import axios from 'axios';
-import { ChangeEvent, useState } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Button } from '@repo/ui/button';
+
+
+
 export function AuthPage({ isSignin }: { isSignin: boolean }) {
   const router = useRouter();
-
-  const [username, setUsername] = useState<String | null>();
-  const [password, setPassword] = useState<String | null>();
-  const [name, setName] = useState<String | null>();
+  const [username, setUsername] = useState<string | null>();
+  const [password, setPassword] = useState<string | null>();
+  const [name, setName] = useState<string | null>();
 
   return (
     <div className="w-screen h-screen flex justify-center items-center">

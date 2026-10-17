@@ -172,7 +172,6 @@ const Navbar: React.FC<DarkModeProps> = ({ isDarkMode, toggleDarkMode }) => (
       delay={200}
       className="hidden lg:flex items-center gap-8 text-sm text-gray-500 dark:text-gray-400 font-medium"
     >
-      
       <a
         href="#how-it-works"
         className="hover:text-black dark:hover:text-white transition-colors"
@@ -443,7 +442,7 @@ const TestimonialsSection: React.FC = () => {
                 >
                   <div className="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] mix-blend-overlay"></div>
                   <p className="text-white text-lg font-medium italic relative z-10">
-                    "{t.quote}"
+                    &quot;{t.quote}&quot;
                   </p>
                 </div>
                 <div className="px-2">

@@ -1,4 +1,4 @@
-import { initDraw } from '@/draw';
+
 import { useEffect, useRef, useState } from 'react';
 import { IconButton } from './Icons';
 import {
@@ -8,9 +8,10 @@ import {
   Maximize,
   Hand,
   Eraser,
+  House,
 } from 'lucide-react';
 import { Game } from '@/draw/Game';
-
+import { useRouter } from 'next/navigation';
 export type Tool = 'pencil' | 'rect' | 'circle' | 'hand' | 'eraser';
 
 export function Canvas({
@@ -20,6 +21,7 @@ export function Canvas({
   socket: WebSocket;
   roomId: string;
 }) {
+
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [game, setGame] = useState<Game>();
   const [selectedTool, setSelectedTool] = useState<Tool>('circle');
@@ -64,6 +66,7 @@ function Topbar({
   setSelectedTool: (s: Tool) => void;
   onResetView: () => void;
 }) {
+    const router = useRouter();
   return (
     <div
       style={{
@@ -73,6 +76,13 @@ function Topbar({
       }}
     >
       <div className="flex gap-t">
+                <IconButton
+  onClick={() => router.push("/dashboard")}
+          activated={selectedTool === 'pencil'}
+          icon={<House />}
+        />
+
+
         <IconButton
           onClick={() => {
             setSelectedTool('pencil');
