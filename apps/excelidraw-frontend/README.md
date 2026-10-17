@@ -1,3 +1,108 @@
+# 🚀 Excelidraw Frontend - Interactive Canvas App
+
+## 📖 Description
+The Excelidraw Frontend is the core client-facing application of the Freeflow platform. It houses the interactive digital canvas where users can draw, brainstorm, and collaborate in real-time. 
+
+**Why it is useful:** It provides a buttery-smooth drawing experience combined with instant WebSocket updates, ensuring that collaborating remotely feels as seamless as sitting in the same room.
+
+**Key features:**
+* Highly performant HTML5 Canvas interactions
+* Real-time cursor tracking and stroke rendering
+* Integrated Dashboard and Room creation
+* Smooth animations using GSAP and Lenis
+* Fully responsive and modern UI using Tailwind CSS
+
+## 🧭 Table of Contents
+1. [Tech Stack](#-tech-stack)
+2. [Installation](#-installation)
+3. [Usage](#-usage)
+4. [Usage Examples](#-usage-examples)
+5. [Project Structure](#-project-structure)
+6. [Features](#-features)
+7. [Future Improvements](#-future-improvements)
+8. [Contributing](#-contributing)
+9. [Author / Credits](#-author--credits)
+
+## 🛠️ Tech Stack
+* **Framework:** Next.js 15.1
+* **UI Library:** React 19
+* **Styling:** Tailwind CSS, Tailwind Animate
+* **Animations:** GSAP, Lenis
+* **Icons:** Lucide React
+* **HTTP Client:** Axios
+
+## ⚙️ Installation
+*Note: It is highly recommended to run this from the root of the monorepo.*
+If you are setting this up individually, ensure Node.js and `pnpm` are installed.
+
+```bash
+# Navigate to the app directory
+cd apps/excelidraw-frontend
+
+# Install local dependencies (or run from root)
+pnpm install
+
+# Set up environment variables locally (if required separately from root)
+cp .env.example .env
+```
+
+## ▶️ Usage
+To run the Next.js development server:
+
+```bash
+npm run dev
+# or
+pnpm run dev
+```
+
+Expected Output: The application will be accessible at http://localhost:3000 (or assigned port). You should be able to navigate to the sign-in page, dashboard, and the canvas room (/canvas/[roomId]).
+
+## 💡 Usage Examples
+Joining a Room:
+When a user navigates to /canvas/123, the app establishes a WebSocket connection to the ws-backend using the user's JWT token, syncing the canvas state automatically.
+
+## 📂 Project Structure
+/app: Next.js 15 App Router pages (Dashboard, Sign in, Signup, Canvas).
+
+/components: Reusable React components (AuthPage, Canvas, CreateRoom).
+
+/draw: Core logic for drawing and canvas state management (Game.ts, http.ts).
+
+/public: Static assets (SVGs, icons).
+
+## 🚧 Features
+Dedicated Authentication flows (Sign In / Sign Up)
+
+Room creation and joining mechanics
+
+Infinite scrolling / smooth scrolling (ScrollStack)
+
+Complex state management for drawing coordinates
+
+## 🔮 Future Improvements
+Add exporting capabilities (PNG/SVG)
+
+Implement shape recognition
+
+Add sticky notes and text-box integrations
+
+## 🤝 Contributing
+Refer to the main repository guidelines for contribution instructions.
+
+## 👤 Author / Credits
+Nishaad Dhabale
+
+
+
+
+
+
+
+
+
+
+
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
