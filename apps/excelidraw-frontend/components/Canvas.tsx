@@ -1,12 +1,17 @@
 import { initDraw } from '@/draw';
 import { useEffect, useRef, useState } from 'react';
 import { IconButton } from './Icons';
-import { Circle, Pencil, RectangleHorizontalIcon } from 'lucide-react';
-import {Game} from '@/draw/Game'
+import {
+  Circle,
+  Pencil,
+  RectangleHorizontalIcon,
+  Maximize,
+  Hand,
+  Eraser,
+} from 'lucide-react';
+import { Game } from '@/draw/Game';
 
-export type Tool = 'pencil' | 'rect' | 'circle';
-
-
+export type Tool = 'pencil' | 'rect' | 'circle' | 'hand' | 'eraser';
 
 export function Canvas({
   roomId,
@@ -16,22 +21,20 @@ export function Canvas({
   roomId: string;
 }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [game,setGame]=useState<Game>();
+  const [game, setGame] = useState<Game>();
   const [selectedTool, setSelectedTool] = useState<Tool>('circle');
   useEffect(() => {
     //@ts-ignore
     game?.setTool(selectedTool);
-  }, [selectedTool,game]);
-
-
+  }, [selectedTool, game]);
 
   useEffect(() => {
     if (canvasRef.current) {
-      const g= new Game(canvasRef.current, roomId,socket);
+      const g = new Game(canvasRef.current, roomId, socket);
       setGame(g);
-      return()=>{
+      return () => {
         g.destroy();
-      }
+      };
     }
   }, [canvasRef]);
 
@@ -43,7 +46,11 @@ export function Canvas({
       }}
     >
       <canvas ref={canvasRef} width={2000} height={1000}></canvas>
-      <Topbar selectedTool={selectedTool} setSelectedTool={setSelectedTool} />
+      <Topbar
+        selectedTool={selectedTool}
+        setSelectedTool={setSelectedTool}
+        onResetView={() => game?.resetView()}
+      />
     </div>
   );
 }
@@ -51,9 +58,11 @@ export function Canvas({
 function Topbar({
   selectedTool,
   setSelectedTool,
+  onResetView,
 }: {
   selectedTool: Tool;
   setSelectedTool: (s: Tool) => void;
+  onResetView: () => void;
 }) {
   return (
     <div
@@ -85,6 +94,23 @@ function Topbar({
             setSelectedTool('circle');
           }}
         />
+        <IconButton
+          activated={selectedTool === 'circle'}
+          icon={<Maximize />}
+          onClick={() => {
+            onResetView();
+          }}
+        />
+        <IconButton
+          activated={selectedTool === 'hand'}
+          icon={<Hand />}
+          onClick={() => setSelectedTool('hand')}
+        />
+        <IconButton
+  activated={selectedTool === 'eraser'}
+  icon={<Eraser />}
+  onClick={() => setSelectedTool('eraser')}
+/>
       </div>
     </div>
   );

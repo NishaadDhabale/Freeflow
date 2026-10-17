@@ -110,7 +110,7 @@ app.post('/room', middleware, async (req, res) => {
 });
 
 app.get('/rooms',middleware,async (req,res)=>{
-   
+
   // @ts-ignore: TODO: Fix this
   const userId = req.userId;
 
@@ -136,30 +136,39 @@ app.get('/rooms',middleware,async (req,res)=>{
 
 
 })
+
+
+
+
 app.get('/chats/:roomId', async (req, res) => {
   try {
     const roomId = Number(req.params.roomId);
-    console.log(req.params.roomId);
+
+    if (!Number.isInteger(roomId) || roomId <= 0) {
+      res.status(400).json({ message: 'Invalid room ID' });
+      return;
+    }
+
     const messages = await prismaClient.chat.findMany({
       where: {
-        roomId: roomId,
+        roomId,
       },
       orderBy: {
-        id: 'desc',
+        id: 'asc',
       },
       take: 50,
     });
 
-    res.json({
-      messages,
-    });
-  } catch (e) {
-    console.log(e);
-    res.json({
-      messages: [],
+    res.json({ messages });
+  } catch (error) {
+    console.error('Failed to fetch room shapes:', error);
+
+    res.status(500).json({
+      message: 'Failed to fetch room shapes',
     });
   }
 });
+
 
 app.get('/room/:slug', async (req, res) => {
   const slug = req.params.slug;

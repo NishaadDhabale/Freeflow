@@ -57,7 +57,7 @@ wss.on('connection', function connection(ws, request) {
     if (typeof data !== 'string') {
       parsedData = JSON.parse(data.toString());
     } else {
-      parsedData = JSON.parse(data); 
+      parsedData = JSON.parse(data);
     }
 
     if (parsedData.type === 'join_room') {
@@ -70,32 +70,100 @@ wss.on('connection', function connection(ws, request) {
       if (!user) {
         return;
       }
-      user.rooms = user?.rooms.filter((x) => x === parsedData.room);
+      user.rooms = user.rooms.filter(
+  (room) => room !== String(parsedData.roomId)
+);
     }
 
     console.log('message received');
     console.log(parsedData);
 
     if (parsedData.type === 'chat') {
-      const roomId = parsedData.roomId;
+      const roomId = String(parsedData.roomId);
+      const roomIdNumber = Number(roomId);
       const message = parsedData.message;
 
+      if (!Number.isInteger(roomIdNumber) || roomIdNumber <= 0) {
+        return;
+      }
 
-      await prismaClient.chat.create({
+      const sender = users.find((user) => user.ws === ws);
+
+      // Only allow messages in rooms the sender has joined
+      if (!sender || !sender.rooms.includes(roomId)) {
+        return;
+      }
+
+      let payload: any;
+
+      try {
+        payload = JSON.parse(message);
+      } catch {
+        console.error('Invalid chat message');
+        return;
+      }
+
+      // Handle erase requests
+      if (payload.action === 'erase') {
+        const shapeId = Number(payload.shapeId);
+
+        if (!Number.isInteger(shapeId) || shapeId <= 0) {
+          return;
+        }
+
+        const deleted = await prismaClient.chat.deleteMany({
+          where: {
+            id: shapeId,
+            roomId: roomIdNumber,
+          },
+        });
+
+        // Don't broadcast a deletion if no database record was deleted
+        if (deleted.count === 0) {
+          return;
+        }
+
+        users.forEach((user) => {
+          if (
+            user.rooms.includes(roomId) &&
+            user.ws.readyState === WebSocket.OPEN
+          ) {
+            user.ws.send(
+              JSON.stringify({
+                type: 'chat',
+                roomId,
+                message: JSON.stringify({
+                  action: 'erase',
+                  shapeId,
+                }),
+              }),
+            );
+          }
+        });
+
+        return;
+      }
+
+      // Save a newly drawn shape
+      const savedChat = await prismaClient.chat.create({
         data: {
-          roomId: Number(roomId),
+          roomId: roomIdNumber,
           message,
           userId,
         },
       });
 
       users.forEach((user) => {
-        if (user.rooms.includes(roomId)) {
+        if (
+          user.rooms.includes(roomId) &&
+          user.ws.readyState === WebSocket.OPEN
+        ) {
           user.ws.send(
             JSON.stringify({
               type: 'chat',
-              message: message,
+              message,
               roomId,
+              chatId: savedChat.id,
             }),
           );
         }
