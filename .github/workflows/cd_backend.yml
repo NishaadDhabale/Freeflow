@@ -21,7 +21,6 @@ jobs:
           context: .
           file: docker/Dockerfile.backend
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/freeflow-backend:{{ github.sha }}
+          tags: nishaaddhabale/freeflow-backend:{{ github.sha }}
 
 
-      
