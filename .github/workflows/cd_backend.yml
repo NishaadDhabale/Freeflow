@@ -1,7 +1,7 @@
 name: Deploy the backend
 on:
   push:
-    branches: [ main]
+    branches: [main]
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -22,5 +22,3 @@ jobs:
           file: docker/Dockerfile.backend
           push: true
           tags: nishaaddhabale/freeflow-backend:{{ github.sha }}
-
-
