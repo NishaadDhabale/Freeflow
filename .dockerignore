@@ -1,0 +1,53 @@
+
+# Dependencies
+**/node_modules
+**/.pnp
+.pnp.*
+
+# Build outputs
+**/.next
+**/dist
+**/build
+**/.turbo
+**/coverage
+**/out
+
+# Environment variables and secrets
+.env
+.env.*
+**/.env
+**/.env.*
+!.env.example
+!**/.env.example
+
+# Git
+.git
+.gitignore
+
+# Logs
+**/*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# Cache and temporary files
+**/.cache
+**/tmp
+**/temp
+.DS_Store
+Thumbs.db
+
+# IDE/editor files
+.vscode
+.idea
+*.swp
+*.swo
+
+# Docker files
+Dockerfile*
+docker-compose*.yml
+.dockerignore
+
+# Documentation
+**/README.md
+**/CHANGELOG.md

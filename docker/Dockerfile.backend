@@ -1,0 +1,21 @@
+FROM node:20
+
+WORKDIR /app
+
+RUN npm install -g pnpm@9.0.0
+
+COPY ./packages ./packages
+COPY pnpm-lock.yaml pnpm-workspace.yaml turbo.json ./
+COPY ./package.json ./package.json
+COPY apps/http-backend/package.json ./apps/http-backend/package.json
+
+COPY ./apps/http-backend ./apps/http-backend
+
+RUN pnpm install
+RUN pnpm generate:db
+
+RUN pnpm exec turbo build --filter=http-backend
+
+EXPOSE 3001
+
+CMD ["pnpm", "start:http"]

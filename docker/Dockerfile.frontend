@@ -1,0 +1,20 @@
+FROM node:20
+WORKDIR /app
+ARG DATABASE_URL
+RUN npm install -g pnpm@9.0.0
+
+COPY ./packages ./packages
+COPY pnpm-lock.yaml pnpm-workspace.yaml turbo.json ./
+COPY apps/excelidraw-frontend/package.json ./apps/excelidraw-frontend/package.json
+COPY turbo.json ./turbo.json
+COPY ./package.json ./package.json
+
+RUN pnpm install
+RUN pnpm generate:db
+
+COPY ./apps/excelidraw-frontend ./apps/excelidraw-frontend
+
+RUN DATABASE_URL=${DATABASE_URL} pnpm exec turbo  build --filter=excelidraw-frontend
+
+EXPOSE 3000
+CMD ["pnpm", "start:frontend"]
