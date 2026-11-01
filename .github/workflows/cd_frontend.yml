@@ -24,3 +24,14 @@ jobs:
             DB_URL=${{ secrets.DB_URL }}
           push: true
           tags: nishaaddhabale/freeflow-frontend:${{ github.sha }}
+
+      - name: Deploy to VM
+          run: |
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" &> ~/ssh_key
+          mkdir -p /home/runner/.ssh
+          ls /home/runner/.ssh
+          touch /home/runner/.ssh/known_hosts
+          echo "${{ secrets.KNOWN_HOSTS }}" &> /home/runner/.ssh/known_hosts
+          chmod 700 /home/runner/ssh_key
+          ssh -o StrictHostKeyChecking=no -i ~/ssh_key root@43.204.144.137 -t "docker stop user_frontend && docker run --name freeflow_frontend -d -p 3001:3001 nishaaddhabale/freeflow-frontend:${{ github.sha }}"
+
