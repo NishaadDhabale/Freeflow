@@ -1,7 +1,7 @@
 FROM node:20
 
 WORKDIR /app
-
+ARG DATABASE_URL
 RUN npm install -g pnpm@9.0.0
 
 COPY ./packages ./packages
@@ -14,7 +14,7 @@ COPY ./apps/http-backend ./apps/http-backend
 RUN pnpm install
 RUN pnpm generate:db
 
-RUN pnpm exec turbo build --filter=http-backend
+RUN DATABASE_URL="${DATABASE_URL}" pnpm exec turbo build --filter=http-backend
 
 EXPOSE 3001
 
