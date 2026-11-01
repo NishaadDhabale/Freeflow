@@ -24,7 +24,7 @@ jobs:
             DB_URL=${{ secrets.DB_URL }}
           push: true
           tags: nishaaddhabale/freeflow-frontend:${{ github.sha }}
-sdf,naksdflkaf;ksaldflsdflamsfv,nadf,v m,cxm, ///not in use
+sdf,naksdflkaf;ksaldflsdflamsfv,nadf,v m,cxm, ///notn use
  - run: |
            echo "${{ secrets.SSH_PRIVATE_KEY }}" &> ~/ssh_key
            mkdir -p /home/runner/.ssh
