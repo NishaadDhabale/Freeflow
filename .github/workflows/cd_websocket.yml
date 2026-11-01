@@ -24,7 +24,7 @@ jobs:
           tags: nishaaddhabale/freeflow-websocket:${{ github.sha }}
 
       - name: Deploy to VM
-          run: |
+      - run: |
           echo "${{ secrets.SSH_PRIVATE_KEY }}" &> ~/ssh_key
           mkdir -p /home/runner/.ssh
           ls /home/runner/.ssh
