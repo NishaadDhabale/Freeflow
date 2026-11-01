@@ -30,4 +30,4 @@ jobs:
            touch /home/runner/.ssh/known_hosts
            echo "${{ secrets.KNOWN_HOSTS }}" &> /home/runner/.ssh/known_hosts
            chmod 700 /home/runner/ssh_key
-           ssh -o StrictHostKeyChecking=no -i ~/ssh_key ubuntu@43.204.144.137 -t "docker stop freeflow_websocket && docker run --name freeflow_websocket -d -p 8080:8080 nishaaddhabale/freeflow-websocket:${{ github.sha }}"
+           ssh -o StrictHostKeyChecking=no -i ~/ssh_key ubuntu@43.204.144.137 -t "(docker rm -f freeflow_websocket || true) && docker run --name freeflow_websocket -d -p 8080:8080 nishaaddhabale/freeflow-websocket:${{ github.sha }}"

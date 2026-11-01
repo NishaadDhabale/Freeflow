@@ -32,4 +32,4 @@ jobs:
            touch /home/runner/.ssh/known_hosts
            echo "${{ secrets.KNOWN_HOSTS }}" &> /home/runner/.ssh/known_hosts
            chmod 700 /home/runner/ssh_key
-           ssh -o StrictHostKeyChecking=no -i ~/ssh_key ubuntu@43.204.144.137 -t "docker stop freeflow_frontend && docker run --name freeflow_frontend -d -p 3000:3000 nishaaddhabale/freeflow-frontend:${{ github.sha }}"
+           ssh -o StrictHostKeyChecking=no -i ~/ssh_key ubuntu@43.204.144.137 -t "(docker rm -f freeflow_frontend || true) && docker run --name freeflow_frontend -d -p 3000:3000 nishaaddhabale/freeflow-frontend:${{ github.sha }}"
