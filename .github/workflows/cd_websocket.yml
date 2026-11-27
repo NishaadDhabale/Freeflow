@@ -21,6 +21,8 @@ jobs:
           context: .
           file: docker/Dockerfile.websocket
           push: true
+          build-args: |
+            DATABASE_URL=${{ secrets.DB_URL }}
           tags: nishaaddhabale/freeflow-websocket:${{ github.sha }}
 
       - run: |
@@ -30,4 +32,4 @@ jobs:
            touch /home/runner/.ssh/known_hosts
            echo "${{ secrets.KNOWN_HOSTS }}" &> /home/runner/.ssh/known_hosts
            chmod 700 /home/runner/ssh_key
-           ssh -o StrictHostKeyChecking=no -i ~/ssh_key ubuntu@54.236.222.170 -t "(docker rm -f freeflow_websocket || true) && docker run --name freeflow_websocket -d -p 8080:8080 nishaaddhabale/freeflow-websocket:${{ github.sha }}"
+           ssh -o StrictHostKeyChecking=no -i ~/ssh_key ubuntu@54.236.222.170 -t "(docker rm -f freeflow_websocket || true) && docker run --name freeflow_websocket --restart unless-stopped -e DATABASE_URL='${{ secrets.DB_URL }}' -d -p 8080:8080 nishaaddhabale/freeflow-websocket:${{ github.sha }}"
