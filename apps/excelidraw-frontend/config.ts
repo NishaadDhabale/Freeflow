@@ -12,5 +12,5 @@ export const WS_URL =
 export const WS_URL =
   'wss://marketplace-dallas-silly-wav.trycloudflare.com';*/
 
-export const HTTP_BACKEND = 'https://freeflow-backend.sudonishaad.space:3001';
-export const WS_URL = 'ws://freeflow-backend.sudonishaad.space:8080';
+export const HTTP_BACKEND = 'https://freeflow-backend.sudonishaad.space';
+export const WS_URL = 'wss://freeflow-ws.sudonishaad.space';
