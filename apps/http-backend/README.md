@@ -7,7 +7,7 @@ Here is the detailed README documentation for your `http-backend` based on the p
 ```
 http://localhost:3001
 ```
-
+hi
 ## Authentication
 Protected endpoints require authentication via a JWT token. Include the token in the `Authorization` header of your request:
 ```
@@ -20,7 +20,7 @@ Responses generally return direct JSON objects based on the request's success or
 ```json
 {
   "message": "Response message string",
-  "error": { ... } 
+  "error": { ... }
 }
 ```
 
@@ -211,7 +211,7 @@ The API uses standard HTTP status codes combined with JSON messages to indicate 
 Returned when authentication fails, a token is missing, or credentials don't match during sign-in.
 ```json
 {
-  "message": "Unauthorized" 
+  "message": "Unauthorized"
 }
 ```
 
@@ -290,7 +290,7 @@ const createRoom = async (roomName) => {
 const getRoomChats = async (roomId) => {
   const response = await fetch(`http://localhost:3001/chats/${roomId}`);
   const data = await response.json();
-  
+
   return data.messages || [];
 };
 ```
