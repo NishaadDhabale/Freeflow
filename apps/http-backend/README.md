@@ -7,7 +7,7 @@ Here is the detailed README documentation for your `http-backend` based on the p
 ```
 http://localhost:3001
 ```
-hi
+
 ## Authentication
 Protected endpoints require authentication via a JWT token. Include the token in the `Authorization` header of your request:
 ```
