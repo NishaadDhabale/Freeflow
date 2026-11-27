@@ -46,8 +46,8 @@ app.post('/signup', async (req, res) => {
 app.post('/signin', async (req, res) => {
   const parsedData = SigninSchema.safeParse(req.body);
   if (!parsedData.success) {
-    res.json({
-      error: parsedData.error.format,
+    res.status(400).json({
+      error: parsedData.error.format(),
       message: 'Incorrect inputs',
     });
     return;
@@ -62,7 +62,7 @@ app.post('/signin', async (req, res) => {
   });
 
   if (!user) {
-    res.status(403).json({
+    res.status(401).json({
       message: 'Not authorized',
     });
     return;
@@ -72,12 +72,13 @@ app.post('/signin', async (req, res) => {
     {
       userId: user?.id,
     },
-    JWT_SECRET
+    JWT_SECRET,
   );
 
-  res.json({
-    token,
-  });
+ res.status(200).json({
+            message: 'Login successful',
+            token
+        });
 });
 
 app.post('/room', middleware, async (req, res) => {
@@ -109,36 +110,28 @@ app.post('/room', middleware, async (req, res) => {
   }
 });
 
-app.get('/rooms',middleware,async (req,res)=>{
-
+app.get('/rooms', middleware, async (req, res) => {
   // @ts-ignore: TODO: Fix this
   const userId = req.userId;
 
-  try{
- const messages = await prismaClient.room.findMany({
+  try {
+    const messages = await prismaClient.room.findMany({
       where: {
         adminId: userId,
       },
       orderBy: {
         id: 'desc',
       },
-      take:
-      50
-      });
+      take: 50,
+    });
 
-  res.json({
-    messages
-  })
-}
-  catch(err){
-    res.json({err})
+    res.json({
+      messages,
+    });
+  } catch (err) {
+    res.json({ err });
   }
-
-
-})
-
-
-
+});
 
 app.get('/chats/:roomId', async (req, res) => {
   try {
@@ -169,7 +162,6 @@ app.get('/chats/:roomId', async (req, res) => {
   }
 });
 
-
 app.get('/room/:slug', async (req, res) => {
   const slug = req.params.slug;
   const room = await prismaClient.room.findFirst({
@@ -182,7 +174,5 @@ app.get('/room/:slug', async (req, res) => {
     room,
   });
 });
-
-
 
 app.listen(3001);

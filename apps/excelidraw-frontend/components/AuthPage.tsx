@@ -5,8 +5,6 @@ import axios from 'axios';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
-
-
 export function AuthPage({ isSignin }: { isSignin: boolean }) {
   const router = useRouter();
   const [username, setUsername] = useState<string | null>();
@@ -60,11 +58,20 @@ export function AuthPage({ isSignin }: { isSignin: boolean }) {
                       alert(res.data.error);
                     } else {
                       const token = res.data.token;
+
+                      if (!token) {
+                        alert(res.data.message || 'Login failed');
+                        return;
+                      }
                       localStorage.setItem('authorization', token);
-                      console.log(token);
                       router.push('/dashboard');
                     }
-                  });
+                  }).catch((error) => {
+            alert(
+                error.response?.data?.message ||
+                "Something went wrong. Please try again."
+            );
+        });
               } else {
                 axios
                   .post(`${HTTP_BACKEND}/signup`, {
